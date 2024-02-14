@@ -1,1 +1,10 @@
-<p>single-user works!</p>
+<section class="container text-center mt-5" *ngIf="user">
+    <h2 class="pb-4">
+        User Details
+    </h2>
+    <div>
+        <p><strong>ID:</strong> {{ user.id }}</p>
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Type:</strong> {{ user.type }}</p>
+    </div>
+</section>

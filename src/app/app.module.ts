@@ -11,6 +11,9 @@ import { UsersViewComponent } from './users/users-view/users-view.component';
 import { AnagraphicsViewComponent } from './anagraphics/anagraphics-view/anagraphics-view.component';
 import { SingleAnagraphicComponent } from './anagraphics/single-anagraphic/single-anagraphic.component';
 import { LoginViewComponent } from './login/login-view/login-view.component';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { tokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -26,9 +29,20 @@ import { LoginViewComponent } from './login/login-view/login-view.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    provideHttpClient(
+      withInterceptorsFromDi(),
+    ),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useValue: tokenInterceptor,
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

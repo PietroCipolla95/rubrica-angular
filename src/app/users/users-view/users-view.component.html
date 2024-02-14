@@ -1,1 +1,107 @@
-<p>users-view works!</p>
+<div class="row mt-5">
+
+    <!-- column with user creation -->
+    <div class="col-12 col-lg-5">
+
+        <h3 class="text-center pb-4">Create User</h3>
+
+        <form (ngSubmit)="addUser()" class="w-75">
+
+            <!-- name -->
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control"
+                    [(ngModel)]="newUser.name" name="name">
+            </div>
+
+            <!-- password -->
+            <div class="form-group py-3">
+                <label>Password</label>
+                <input type="password" class="form-control"
+                    [(ngModel)]="newUser.password" name="password">
+            </div>
+
+            <!-- type -->
+            <div class="form-group">
+                <label>Type</label>
+                <select class="form-control w-25" [(ngModel)]="newUser.type"
+                    name="type">
+                    <option value="admin">Admin</option>
+                    <option value="operator">Operator</option>
+                </select>
+            </div>
+
+            <!-- submit button -->
+            <button type="submit" class="btn btn-dark btn-outline-info mt-4">
+                Create
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- column with user list -->
+    <div class="col-12 col-lg-7">
+
+        <!-- alert with deleted user infos -->
+        <div *ngIf="deletedUser.id"
+            class="alert alert-danger alert-dismissible fade show" role="alert">
+            You deleted user:
+            <span class="text-dark fw-bolder">
+                {{ deletedUser.name }} , {{ deletedUser.type }}
+            </span>
+            with id:
+            <span class="text-dark fw-bolder">
+                {{ deletedUser.id }}
+            </span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+        </div>
+
+        <!-- alert with added user message -->
+        <div *ngIf="message"
+            class="alert alert-success alert-dismissible fade show"
+            role="alert">
+            <span class="text-dark fw-bolder">
+                {{message}}
+            </span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+        </div>
+
+        <!-- table with user list -->
+        <table
+            class="table table-sm table-borderless table-hover mt-5 text-center align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr *ngFor="let user of users">
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.type }}</td>
+                    <td class="p-3">
+                        <a [routerLink]="['/users', user.id]"
+                            class="btn btn-dark">
+                            View
+                        </a>
+                        <a [routerLink]="['/users/edit', user.id]"
+                            class="btn btn-secondary mx-2">
+                            Edit
+                        </a>
+                        <button class="btn btn-danger"
+                            (click)="deleteUser(user.id)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
