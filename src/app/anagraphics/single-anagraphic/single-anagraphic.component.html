@@ -1,1 +1,190 @@
-<p>single-anagraphic works!</p>
+<section *ngIf="anagraphic" class="container py-5 text-center">
+
+    <!-- row wrapper -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-5">
+
+        <!-- col with anagraphic details -->
+        <div class="col bg-dark text-light py-4 rounded-5">
+            <div class="d-flex justify-content-around">
+                <h2 class="pb-4">
+                    Anagraphic Details
+                </h2>
+
+                <!-- offcanvas trigger -->
+                <button class="btn btn-info h-50 fw-bold" type="button"
+                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                    aria-controls="offcanvasRight"
+                    *ngIf="checkPermission('anagraphics_write')">
+                    Edit
+                </button>
+
+                <!-- offcanvas -->
+                <div class="offcanvas offcanvas-end bg-dark text-light"
+                    tabindex="-1"
+                    id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title"
+                            id="offcanvasRightLabel">
+                            Anagraphic Edit
+                        </h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+
+                        <!-- form to update the anagraphic -->
+                        <form (ngSubmit)="updateAnagraphic()" method="post"
+                            enctype="multipart/form-data">
+
+                            <!-- name -->
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="anagraphic.name"
+                                    name="name" id="name">
+                            </div>
+
+                            <!-- photo (optional) -->
+                            <div class="form-group py-3">
+                                <label>Photo (optional)</label>
+                                <input type="file" ref="photoInput"
+                                    class="form-control"
+                                    (change)="onFileSelected($event)"
+                                    name="photo"
+                                    id="photo"
+                                    accept="image/png, image/jpg">
+                            </div>
+
+                            <!-- note (optional) -->
+                            <div class="form-group">
+                                <label>Note (optional)</label>
+                                <textarea class="form-control"
+                                    [(ngModel)]="anagraphic.notes"
+                                    name="notes"
+                                    id="notes"
+                                    rows="3"></textarea>
+                            </div>
+
+                            <!-- submit button -->
+                            <button type="submit"
+                                class="btn btn-dark btn-outline-info mt-4">
+                                Update
+                            </button>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- infos -->
+            <div>
+                <img [src]="'data:image/jpeg;base64,' + anagraphic.photo"
+                    alt class="my_img pb-4">
+                <p><strong>ID:</strong> {{ anagraphic.id }}</p>
+                <p><strong>Name:</strong> {{ anagraphic.name }}</p>
+                <p><strong>Note:</strong> {{ anagraphic.notes || 'N/A' }}</p>
+            </div>
+
+            <!-- contact creation wrapper -->
+            <div *ngIf="checkPermission('anagraphics_write')">
+                <h3 class="pt-5 pb-3">Contact Create</h3>
+
+                <!-- Form for adding a new contact -->
+                <form (ngSubmit)="addContact()"
+                    class="w-75 m-auto text-start">
+
+                    <!-- contact -->
+                    <div class="form-group">
+                        <label>Contact</label>
+                        <input [(ngModel)]="newContact.contact" name="contact"
+                            type="text"
+                            class="form-control" required>
+                    </div>
+
+                    <!-- types -->
+                    <div class="form-group py-3">
+                        <label>Type</label>
+                        <select class="form-control"
+                            [(ngModel)]="newContact.type" name="type"
+                            required>
+                            <option value="home">Home</option>
+                            <option value="work">Work</option>
+                            <option value="telephone">Telephone</option>
+                            <option value="fax">Fax</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="email">Email</option>
+                            <option value="altro">altro</option>
+                        </select>
+                    </div>
+
+                    <!-- notes -->
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea [(ngModel)]="newContact.notes" name="notes"
+                            class="form-control"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="btn btn-dark btn-outline-info mt-4">
+                        Add Contact
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- col with existing contacts -->
+        <div class="col">
+
+            <h2 class="pb-4">
+                Contacts List
+            </h2>
+
+            <!-- Display existing contacts -->
+
+            <ul *ngIf="contacts.length == 0">
+                <p class="fs-4 fw-bolder">
+                    No contacts
+                </p>
+            </ul>
+
+            <ul class=" list-unstyled">
+                <li *ngFor="let contact of contacts"
+                    class=" bg-dark text-light rounded-5 my-2 p-3">
+
+                    <!-- wrapper for infos -->
+                    <div>
+                        <span class="text-info fw-bolder">
+                            {{ contact.type }}
+                        </span>
+                        <p class="m-0">
+                            {{ contact.contact }}
+                        </p>
+                        <p>
+                            {{ contact.notes }}
+                        </p>
+                    </div>
+
+                    <!-- wrapper for actions -->
+                    <div v-if="isAdmin">
+                        <button *ngIf="checkPermission('anagraphics_write')"
+                            class="btn btn-secondary me-3" type="button">
+                            Edit
+                        </button>
+
+                        <button *ngIf="checkPermission('anagraphics_write')"
+                            class="btn btn-danger">
+                            Delete
+                        </button>
+                    </div>
+
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</section>

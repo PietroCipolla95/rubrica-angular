@@ -1,1 +1,77 @@
-<p>anagraphics-view works!</p>
+<h3 class="text-center py-4">Anagraphics List</h3>
+
+<div class="row g-5">
+
+    <!-- anagraphic creation form -->
+    <div class="col-lg-4 col-md-5 col-12"
+        *ngIf="checkPermission('anagraphics_write')">
+
+        <form (ngSubmit)="addAnagraphic()" method="post" class
+            enctype="multipart/form-data">
+
+            <!-- name -->
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control"
+                    [(ngModel)]="formData.name" name="name">
+            </div>
+
+            <!-- photo (optional) -->
+            <div class="form-group py-3">
+                <label>Photo (optional)</label>
+                <input type="file" ref="photoInput" class="form-control"
+                    (change)="onFileSelected($event)"
+                    [(ngModel)]="formData.photo" name="photo" id="photo"
+                    accept="image/png, image/jpg">
+            </div>
+
+            <!-- note (optional) -->
+            <div class="form-group">
+                <label>Note (optional)</label>
+                <textarea class="form-control" [(ngModel)]="formData.notes"
+                    name="notes"
+                    rows="3"></textarea>
+            </div>
+
+            <!-- submit button -->
+            <button type="submit"
+                class="btn btn-dark btn-outline-info mt-4">
+                Create
+            </button>
+
+        </form>
+    </div>
+
+    <!-- dinamic anagraphic generation -->
+
+    <div class="col-lg-8 col-md-7 col-12">
+
+        <div class="row g-3">
+            @for (anagraphic of anagraphics; track anagraphic.id) {
+
+            <div class="col-lg-4 col-md-6 col-12"
+                v-for="anagraphic in anagraphics"
+                :key="anagraphic.id">
+                <div class="card p-2 text-center bg-dark text-info">
+                    <img class="my_img"
+                        [src]="'data:image/jpeg;base64,' + anagraphic.photo"
+                        alt>
+
+                    <a [routerLink]="['/anagraphics', anagraphic.id]"
+                        class="text-decoration-none text-info fs-3 fw-bold mx-2">
+                        {{anagraphic.name}}
+                    </a>
+
+                    <div id="actions">
+                    </div>
+
+                </div>
+            </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>

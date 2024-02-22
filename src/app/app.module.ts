@@ -11,7 +11,7 @@ import { UsersViewComponent } from './users/users-view/users-view.component';
 import { AnagraphicsViewComponent } from './anagraphics/anagraphics-view/anagraphics-view.component';
 import { SingleAnagraphicComponent } from './anagraphics/single-anagraphic/single-anagraphic.component';
 import { LoginViewComponent } from './login/login-view/login-view.component';
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { tokenInterceptor } from './interceptors/token.interceptor';
 
@@ -35,13 +35,8 @@ import { tokenInterceptor } from './interceptors/token.interceptor';
   ],
   providers: [
     provideHttpClient(
-      withInterceptorsFromDi(),
-    ),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useValue: tokenInterceptor,
-      multi: true
-    },
+      withInterceptors([tokenInterceptor])
+    )
   ],
   bootstrap: [AppComponent]
 })

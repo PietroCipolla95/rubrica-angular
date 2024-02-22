@@ -16,7 +16,12 @@ export class AppComponent {
   }
 
   isLogged() {
-    this.auth.isAuthenticated()
+    const loggedIn = this.auth.isAuthenticated()
+    return loggedIn
+  }
+
+  checkPermission(permission: string): Boolean {
+    return this.auth.hasPermission(permission)
   }
 
 }

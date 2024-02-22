@@ -1,10 +1,31 @@
 <section class="container text-center mt-5" *ngIf="user">
-    <h2 class="pb-4">
-        User Details
-    </h2>
-    <div>
-        <p><strong>ID:</strong> {{ user.id }}</p>
-        <p><strong>Name:</strong> {{ user.name }}</p>
-        <p><strong>Type:</strong> {{ user.type }}</p>
+
+    <div class="row">
+
+        <div class="col-6">
+
+            <h2 class="pb-4">
+                User Details
+            </h2>
+            <div>
+                <p><strong>ID:</strong> {{ user.id }}</p>
+                <p><strong>Name:</strong> {{ user.name }}</p>
+                <p><strong>Type:</strong> {{ user.type }}</p>
+
+            </div>
+        </div>
+
+        <div class="col-6">
+            <h3>
+                Permissions
+            </h3>
+
+            <ul class="d-flex flex-column align-items-center">
+                <li *ngFor="let permission of user.permissions">
+                    {{permission.name}}
+                </li>
+            </ul>
+        </div>
     </div>
+
 </section>

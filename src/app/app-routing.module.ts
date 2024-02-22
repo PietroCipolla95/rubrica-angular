@@ -10,16 +10,16 @@ import { SingleAnagraphicComponent } from './anagraphics/single-anagraphic/singl
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
 
 const routes: Routes = [
   { path: '', component: HomeViewComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginViewComponent },
-  { path: 'users', component: UsersViewComponent, canActivate: [authGuard], data: { adminOnly: true } },
-  { path: 'users/:id', component: SingleUserComponent, canActivate: [authGuard], data: { adminOnly: true } },
-  { path: 'users/edit/:id', component: UserEditComponent, canActivate: [authGuard], data: { adminOnly: true } },
-  { path: 'anagraphics', component: AnagraphicsViewComponent, canActivate: [authGuard] },
-  { path: 'anagraphics/:id', component: SingleAnagraphicComponent, canActivate: [authGuard] },
-  { path: 'app', component: AppComponent },
+  { path: 'users', component: UsersViewComponent, canActivate: [authGuard, roleGuard], data: { adminOnly: true, allowTo: [['user_read'], ['user_write']] } },
+  { path: 'users/:id', component: SingleUserComponent, canActivate: [authGuard, roleGuard], data: { adminOnly: true, allowTo: [['user_read'], ['user_write']] } },
+  { path: 'users/edit/:id', component: UserEditComponent, canActivate: [authGuard, roleGuard], data: { adminOnly: true, allowTo: [['user_read'], ['user_write']] } },
+  { path: 'anagraphics', component: AnagraphicsViewComponent, canActivate: [authGuard, roleGuard], data: { allowTo: [['anagraphics_read']] } },
+  { path: 'anagraphics/:id', component: SingleAnagraphicComponent, canActivate: [authGuard, roleGuard], data: { allowTo: [['anagraphics_read'], ['anagraphics_write']] } },
   { path: '**', component: NotFoundComponent, canActivate: [authGuard] }
 ];
 

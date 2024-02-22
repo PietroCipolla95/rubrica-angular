@@ -14,7 +14,7 @@ export class SingleUserComponent {
   constructor(private route: ActivatedRoute, private usr: UsersService) { }
 
   httpClient = inject(HttpClient);
-  user: any = {};
+  user: any = [];
   id: any = '';
 
 
@@ -35,7 +35,7 @@ export class SingleUserComponent {
   fetchUserDetails() {
     this.httpClient.get('http://localhost:8000/api/user/' + this.id)
       .subscribe((data: any) => {
-        this.user = data.user
+        this.user = data.user[0]
         console.log(this.user);
       });
   }

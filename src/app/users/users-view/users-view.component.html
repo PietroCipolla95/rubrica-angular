@@ -24,11 +24,28 @@
             <!-- type -->
             <div class="form-group">
                 <label>Type</label>
-                <select class="form-control w-25" [(ngModel)]="newUser.type"
+                <select class="form-control w-50" [(ngModel)]="newUser.type"
                     name="type">
                     <option value="admin">Admin</option>
                     <option value="operator">Operator</option>
                 </select>
+            </div>
+
+            <!-- permissions -->
+            <div class="form-group">
+                <label>Permissions</label>
+                <div *ngFor="let permission of permissions"
+                    class="list-group-item">
+                    <input
+                        type="checkbox" name="permissions"
+                        [id]="permission"
+                        [value]="permission"
+                        [(ngModel)]="selectedPermissions[permission]"
+                        (change)="togglePermission(permission)">
+                    <label [for]="permission.id" class="ms-1">
+                        {{permission}}
+                    </label>
+                </div>
             </div>
 
             <!-- submit button -->
@@ -76,14 +93,26 @@
                 <tr>
                     <th>Name</th>
                     <th>Type</th>
+                    <th>Permissions</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="overflow-auto">
 
                 <tr *ngFor="let user of users">
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.type }}</td>
+                    <td>
+                        {{ user.name }}
+                    </td>
+                    <td>
+                        {{ user.type }}
+                    </td>
+                    <td>
+                        <ul>
+                            <li *ngFor="let permission of user.permissions">
+                                {{permission.name}}
+                            </li>
+                        </ul>
+                    </td>
                     <td class="p-3">
                         <a [routerLink]="['/users', user.id]"
                             class="btn btn-dark">
